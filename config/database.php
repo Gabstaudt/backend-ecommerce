@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "sql10.freesqldatabase.com"; // Host do banco
-    private $db_name = "sql10745247"; // Nome do banco
+    private $db_name = "sql10745247";
     private $username = "sql10745247"; // Usuário do banco
     private $password = "ixt9KzvwaW"; // Senha do banco
     public $conn;
