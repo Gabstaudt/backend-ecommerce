@@ -14,27 +14,35 @@ class Usuario {
         $this->conn = $db;
     }
 
-    public function listarTodos() {
-        $query = "SELECT * FROM " . $this->table_name;
+    // Método para criar um novo usuário
+    public function criar() {
+        $query = "INSERT INTO " . $this->table_name . " (nome, email, senha, telefone, endereco)
+                  VALUES (:nome, :email, :senha, :telefone, :endereco)";
+
         $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+
+        // Vincular os valores
+        $stmt->bindParam(':nome', $this->nome);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':senha', $this->senha);
+        $stmt->bindParam(':telefone', $this->telefone);
+        $stmt->bindParam(':endereco', $this->endereco);
+
+        // Tentar executar a query
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function criar() {
-        $query = "INSERT INTO " . $this->table_name . " SET nome=:nome, email=:email, senha=:senha, telefone=:telefone, endereco=:endereco";
+    // Método para listar todos os usuários
+    public function listarTodos() {
+        $query = "SELECT id_usuario, nome, email, telefone, endereco FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
+        $stmt->execute();
 
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":senha", $this->senha);
-        $stmt->bindParam(":telefone", $this->telefone);
-        $stmt->bindParam(":endereco", $this->endereco);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+        return $stmt;
     }
 }
 ?>
