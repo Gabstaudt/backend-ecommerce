@@ -14,7 +14,7 @@ class Usuario {
         $this->conn = $db;
     }
 
-    // Método para criar um novo usuário
+    // Criar um novo usuário
     public function criar() {
         $query = "INSERT INTO " . $this->table_name . " (nome, email, senha, telefone, endereco)
                   VALUES (:nome, :email, :senha, :telefone, :endereco)";
@@ -28,15 +28,10 @@ class Usuario {
         $stmt->bindParam(':telefone', $this->telefone);
         $stmt->bindParam(':endereco', $this->endereco);
 
-        // Tentar executar a query
-        try {
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
-        }
+        return $stmt->execute();
     }
 
-    // Método para listar todos os usuários
+    // Listar todos os usuários
     public function listarTodos() {
         $query = "SELECT id_usuario, nome, email, telefone, endereco FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
